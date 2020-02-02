@@ -156,3 +156,17 @@ void audioAna::boxCount2D(float *data, float *bcnt, float *scf, unsigned int scs
     }
 }
 
+float audioAna::linReg(float *inx, float *iny, unsigned int len){
+    float xyq=0.f, xq=0.f, yq=0.f, xsq=0.f;
+    for (unsigned i=0; i<len; i++){
+        xyq+=iny[i]*inx[i];
+        yq+=iny[i];
+        xq+=inx[i];
+        xsq+=inx[i]*inx[i];
+    }
+    xyq/=float(len);
+    xq/=float(len);
+    yq/=float(len);
+    xsq/=float(len);
+    return (xyq-xq*yq)/(xsq-xq*xq); //calculate slope of linear best fit function
+}
